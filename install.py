@@ -49,7 +49,7 @@ if os.uname()[4][:3] == "arm":
     os.system(""". '%s/slave_venv/bin/activate' && pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp35-cp35m-linux_armv7l.whl && \
 pip install gpiozero && pip install picamera && pip install rpi.gpio""" % curpath)
 
-    with open(os.expanduser("~/.profile"), "a") as f:
+    with open(os.path.expanduser("~/.profile"), "a") as f:
         f.write("\n'%s/slave_init.sh'\n" % curpath)
 else:
     os.system(""". '%s/slave_venv/bin/activate' && pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp36-cp36m-linux_x86_64.whl && \
