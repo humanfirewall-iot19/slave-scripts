@@ -2,6 +2,9 @@
 
 import os
 
+user = os.environ.get('USER')
+if user is None: user = "pi"
+
 curpath = os.path.dirname(os.path.abspath(__file__))
 
 os.system("sudo apt install git python3 python3-dev python3-pip python3-venv")
@@ -40,17 +43,32 @@ export OPENBLAS_MAIN_FREE=1
 cd '%s/slave'
 python3 find_master.py
 
-python3 main.py &
+python3 main.py
 """ % (curpath, curpath))
 
 os.system("chmod +x '%s/slave_init.sh'" % curpath)
+
+with open("%s/slave_service.service", "w") as f:
+    f.write("""[Unit]
+Description=Human Firewall Slave Service
+
+[Service]
+Type=simple
+# Another Type option: forking
+User=pi
+WorkingDirectory=/home/%s
+ExecStart=%s/slave_init.sh
+#Restart=on-failure
+# Other Restart options: or always, on-abort, etc
+
+[Install]
+WantedBy=multi-user.target""" % (curpath, user, user))
 
 if os.uname()[4][:3] == "arm":
     os.system(""". '%s/slave_venv/bin/activate' && pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp35-cp35m-linux_armv7l.whl && \
 pip install gpiozero && pip install picamera && pip install rpi.gpio""" % curpath)
 
-    with open(os.path.expanduser("~/.profile"), "a") as f:
-        f.write("\n'%s/slave_init.sh'\n" % curpath)
+    os.system("sudo systemctl enable '%s/slave_service.service'" % curpath)
 else:
     os.system(""". '%s/slave_venv/bin/activate' && pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp36-cp36m-linux_x86_64.whl && \
 pip install opencv-python""" % curpath)
