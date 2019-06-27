@@ -1,0 +1,13 @@
+certifi
+chardet
+Click
+configparser
+face-recognition
+face-recognition-models
+idna
+numpy
+paho-mqtt
+Pillow
+pkg-resources
+requests
+urllib3
