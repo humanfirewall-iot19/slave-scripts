@@ -46,18 +46,16 @@ python3 main.py &
 os.system("chmod +x %s/slave_init.sh" % curpath)
 
 if os.uname()[4][:3] == "arm":
-    os.system("python3 -m pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp35-cp35m-linux_armv7l.whl")
-    os.system("python3 -m pip install gpiozero")
-    os.system("python3 -m pip install picamera")
-    os.system("python3 -m pip install rpi.gpio")
+    os.system("""%s/bin/activate && pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp35-cp35m-linux_armv7l.whl && \
+pip install gpiozero && pip install picamera && pip install rpi.gpio""" % curpath)
 
     with open(os.expanduser("~/.profile"), "a") as f:
         f.write("\n%s/slave_init.sh\n" % curpath)
 else:
-    os.system("python3 -m pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp36-cp36m-linux_x86_64.whl")
-    os.system("python3 -m pip install opencv-python")
+    os.system("""%s/bin/activate && pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp36-cp36m-linux_x86_64.whl && \
+pip install opencv-python""" % curpath)
 
-os.system("python3 -m pip install -r requirements.txt")
+os.system("%s/bin/activate && pip install -r requirements.txt" % curpath)
 
 os.system("cd %s && git clone https://github.com/humanfirewall-iot19/slave" % curpath)
 
