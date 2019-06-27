@@ -55,14 +55,14 @@ Description=Human Firewall Slave Service
 [Service]
 Type=simple
 # Another Type option: forking
-User=pi
+User=%s
 WorkingDirectory=/home/%s
 ExecStart=%s/slave_init.sh
 #Restart=on-failure
 # Other Restart options: or always, on-abort, etc
 
 [Install]
-WantedBy=multi-user.target""" % (curpath, user, user))
+WantedBy=multi-user.target""" % (user, user, curpath))
 
 if os.uname()[4][:3] == "arm":
     os.system(""". '%s/slave_venv/bin/activate' && pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp35-cp35m-linux_armv7l.whl && \
