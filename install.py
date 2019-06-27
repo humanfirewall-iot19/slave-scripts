@@ -28,7 +28,7 @@ os.system("""sudo apt-get install build-essential \
 
 os.system("python3 -m venv %s/slave_venv" % curpath)
 
-with open("%s/slave_init.sh" % curpath, "w")
+with open("%s/slave_init.sh" % curpath, "w") as f:
     f.write("""#!/bin/sh
 
 . %s/bin/activate
@@ -43,14 +43,14 @@ python3 find_master.py
 python3 main.py &
 """ % (curpath, curpath))
 
-os.system("chmod +x %s/slave_venv/init.sh" % curpath)
+os.system("chmod +x %s/slave_init.sh" % curpath)
 
 if os.uname()[4][:3] == "arm":
     os.system("python3 -m pip install https://github.com/humanfirewall-iot19/dlib-builds/raw/master/dlib-19.17.99-cp35-cp35m-linux_armv7l.whl")
     os.system("python3 -m pip install gpiozero")
     os.system("python3 -m pip install picamera")
     os.system("python3 -m pip install rpi.gpio")
-    
+
     with open(os.expanduser("~/.profile"), "a") as f:
         f.write("\n%s/slave_init.sh\n" % curpath)
 else:
