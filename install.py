@@ -48,7 +48,7 @@ python3 main.py
 
 os.system("chmod +x '%s/slave_init.sh'" % curpath)
 
-with open("%s/slave_service.service", "w") as f:
+with open("%s/slave_service.service" % curpath, "w") as f:
     f.write("""[Unit]
 Description=Human Firewall Slave Service
 
